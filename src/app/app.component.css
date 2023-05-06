@@ -1,11 +1,13 @@
 .grid {
+    margin: auto;
     width: 300px;
     height: 300px;
     display: flex;
     flex-wrap: wrap;
-    background-color: aqua;
+    background-color: black;
     justify-content: center;
     align-items: center;
+    border: 2px solid #00e500;
 }
 
 .grid--disabled {
@@ -15,7 +17,7 @@
 .grid__square {
     width: 30px;
     height: 30px;
-    border: 1px solid white;
+    border: 1px solid rgba(0, 229, 0, 0.3);
     opacity: 1;
     transition: all 0.75s ease;
     box-sizing: border-box;
@@ -28,7 +30,7 @@
 }
 
 .bombed {
-    background-color:darkgray;
+    background-color:dimgray;
 }
 
 .sinking-ship {
