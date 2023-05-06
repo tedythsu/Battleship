@@ -1,0 +1,40 @@
+.grid {
+    width: 300px;
+    height: 300px;
+    display: flex;
+    flex-wrap: wrap;
+    background-color: aqua;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid--disabled {
+    pointer-events: none;
+}
+
+.grid__square {
+    width: 30px;
+    height: 30px;
+    border: 1px solid white;
+    opacity: 1;
+    transition: all 0.75s ease;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.grid__square:not(.bombed, .sinking-ship):hover {
+    background-color: white;
+    opacity: 0.75;
+}
+
+.bombed {
+    background-color:darkgray;
+}
+
+.sinking-ship {
+    background: red;
+}
+
+.hidden-ship {
+    /* background-color: grey; */
+}
