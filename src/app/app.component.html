@@ -1,15 +1,17 @@
-<div>
-  <button (click)="startGame()" class="start-button">START</button>
+<div class="wrapper">
+  <div>
+    <button (click)="startGame()" class="start-button">START</button>
+  </div>
+  
+  <div class="grid" [ngClass]="{'grid--disabled': !gridClickable}">
+    <div draggable="true" class="grid__square" *ngFor="let item of [].constructor(100); let i = index"
+      id="location-{{i + 1}}" (click)="fire(i + 1)"></div>
+  </div>
+  
+  <div>
+    <textarea id="messageArea">Press Start to Start game</textarea>
+  </div>
+  
+  <div class="missile-info">Missile: {{missile}} / 36</div>
 </div>
 
-<div class="grid" [ngClass]="{'grid--disabled': !gridClickable}">
-  <div draggable="true" class="grid__square" *ngFor="let item of [].constructor(100); let i = index"
-    id="location-{{i + 1}}" (click)="fire(i + 1)"></div>
-</div>
-
-<textarea id="messageArea">Press Start to Start game</textarea>
-
-<div>{{missile}}</div>
-
-
-<div *ngIf="ifWin">You Win!</div>

@@ -53,25 +53,26 @@ export class AppComponent {
     text.value = "";
     let timeout = 0;
     infoArray.forEach((element: string) => {
-      
+
       setTimeout(() => {
         text.value += element.toString();
       }, timeout);
 
-      timeout+=25;
+      timeout += 25;
     });
 
+    this.missile = 36;
 
 
   }
 
   fire(position: number) {
     console.log(position);
-    const asd = document.getElementById(`location-${position}`);
+    const aimLocation = document.getElementById(`location-${position}`);
 
-    if (asd?.classList.contains('hidden-ship')) {
-      asd.classList.remove('hidden-ship');
-      asd.classList.add('sinking-ship');
+    if (aimLocation?.classList.contains('hidden-ship')) {
+      aimLocation.classList.remove('hidden-ship');
+      aimLocation.classList.add('sinking-ship');
 
       let usedIndex: number = this.enemyShipsLocation.indexOf(position);
       if (usedIndex !== -1) {
@@ -85,16 +86,18 @@ export class AppComponent {
       text.value = "";
       let timeout = 0;
       infoArray.forEach((element: string) => {
-        
+
         setTimeout(() => {
           text.value += element.toString();
         }, timeout);
 
-        timeout+=50;
+        timeout += 50;
       });
 
-    } else {
-      asd?.classList.add('bombed');
+      this.missile--;
+
+    } else if (!aimLocation?.classList.contains('sinking-ship') && !aimLocation?.classList.contains('bombed')) {
+      aimLocation?.classList.add('bombed');
 
       const infomation = 'You missed.';
       const infoArray = infomation.split('');
@@ -103,18 +106,19 @@ export class AppComponent {
       text.value = "";
       let timeout = 0;
       infoArray.forEach((element: string) => {
-        
+
         setTimeout(() => {
           text.value += element.toString();
         }, timeout);
 
-        timeout+=50;
+        timeout += 50;
       });
 
+      this.missile--;
 
     }
 
-    this.missile--;
+
     this.checkGameStatus();
 
   }
@@ -128,7 +132,22 @@ export class AppComponent {
     }
 
     if (this.missile === 0) {
-      console.log('Game Over!')
+      const infomation = 'Run out of missiles, game over!';
+      const infoArray = infomation.split('');
+
+      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
+      text.value = "";
+      let timeout = 0;
+      infoArray.forEach((element: string) => {
+
+        setTimeout(() => {
+          text.value += element.toString();
+        }, timeout);
+
+        timeout += 50;
+      });
+
+
     }
 
   }
