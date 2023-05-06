@@ -1,24 +1,15 @@
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content below * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * Delete the template below * * * * * * * * * * -->
-<!-- * * * * * * * to get started with your project! * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
-<div class="grid" [ngClass]="{'grid--disabled': !gridClickable}">
-  <div draggable="true" class="grid__square" *ngFor="let item of [].constructor(100); let i = index" id="location-{{i + 1}}" (click)="fire(i + 1)"></div>
+<div>
+  <button (click)="startGame()" class="start-button">START</button>
 </div>
 
-<div><button (click)="startGame()">Start</button></div>
+<div class="grid" [ngClass]="{'grid--disabled': !gridClickable}">
+  <div draggable="true" class="grid__square" *ngFor="let item of [].constructor(100); let i = index"
+    id="location-{{i + 1}}" (click)="fire(i + 1)"></div>
+</div>
+
+<textarea id="messageArea">Press Start to Start game</textarea>
+
+<div>{{missile}}</div>
+
 
 <div *ngIf="ifWin">You Win!</div>
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-

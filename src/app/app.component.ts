@@ -17,6 +17,7 @@ export class AppComponent {
   ifWin: boolean = false;
   gridClickable: boolean = false;
   enemyShipsLocation: number[] = [];
+  missile: number = 36;
 
   ships: Ship[] = [
     { "name": "carrier", "size": 5 },
@@ -45,6 +46,23 @@ export class AppComponent {
       shipLocation?.classList.remove('bombed');
     });
 
+    const infomation = "Destroy the opposing player's fleet!";
+    const infoArray = infomation.split('');
+
+    const text = document.getElementById('messageArea') as HTMLTextAreaElement;
+    text.value = "";
+    let timeout = 0;
+    infoArray.forEach((element: string) => {
+      
+      setTimeout(() => {
+        text.value += element.toString();
+      }, timeout);
+
+      timeout+=25;
+    });
+
+
+
   }
 
   fire(position: number) {
@@ -60,12 +78,43 @@ export class AppComponent {
         this.enemyShipsLocation.splice(usedIndex, 1);
       }
 
-      console.log(this.enemyShipsLocation)
+      const infomation = "It's a hit!";
+      const infoArray = infomation.split('');
+
+      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
+      text.value = "";
+      let timeout = 0;
+      infoArray.forEach((element: string) => {
+        
+        setTimeout(() => {
+          text.value += element.toString();
+        }, timeout);
+
+        timeout+=50;
+      });
 
     } else {
       asd?.classList.add('bombed');
+
+      const infomation = 'You missed.';
+      const infoArray = infomation.split('');
+
+      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
+      text.value = "";
+      let timeout = 0;
+      infoArray.forEach((element: string) => {
+        
+        setTimeout(() => {
+          text.value += element.toString();
+        }, timeout);
+
+        timeout+=50;
+      });
+
+
     }
 
+    this.missile--;
     this.checkGameStatus();
 
   }
@@ -76,6 +125,10 @@ export class AppComponent {
       console.log('You Win!');
       this.ifWin = true;
       this.gridClickable = false;
+    }
+
+    if (this.missile === 0) {
+      console.log('Game Over!')
     }
 
   }

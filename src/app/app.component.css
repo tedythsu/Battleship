@@ -1,3 +1,18 @@
+.start-button {
+    width: 150px;
+    background-color: black;
+    color: #0f0;
+    font-size: 26px;
+    cursor: pointer;
+
+    border-color: #0f0;
+
+    display: flex;
+    justify-content: center;
+    margin: auto;
+    margin-bottom: 20px;
+}
+
 .grid {
     margin: auto;
     width: 300px;
@@ -8,6 +23,7 @@
     justify-content: center;
     align-items: center;
     border: 2px solid #00e500;
+    margin-bottom: 20px;
 }
 
 .grid--disabled {
@@ -39,4 +55,14 @@
 
 .hidden-ship {
     /* background-color: grey; */
+}
+
+#messageArea {
+    resize: none;
+    font-size: 20px;
+    width: 300px;
+    display: flex;
+    margin: auto;
+    pointer-events: none;
+    text-align: center;
 }
