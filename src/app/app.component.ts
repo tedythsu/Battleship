@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 interface Ship {
   name: string;
@@ -10,7 +10,9 @@ interface Ship {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+
+export class AppComponent implements OnInit {
+
   title = 'battleship';
 
   // Game Settings
@@ -19,7 +21,9 @@ export class AppComponent {
   isWin: boolean = false;
   isGridClickable: boolean = false;
   enemyShipLocations: number[] = [];
-  missiles: number = 50;
+  missiles: number = 48;
+  message: string = '';
+  isHit: boolean = false;
 
   ships: Ship[] = [
     { "name": "carrier", "size": 5 },
@@ -29,15 +33,24 @@ export class AppComponent {
     { "name": "patrolBoat", "size": 2 },
   ]
 
-  startGame() {
+  ngOnInit(): void {
+    // 待修改
+    setTimeout(() => {
+      this.newGame();
+    }, 1);
+  }
+
+  newGame() {
     this.initialGame();
     this.generateEnemyShip();
   }
 
   initialGame() {
+    this.missiles = 48;
     this.enemyShipLocations = [];
     this.isGridClickable = true;
     this.isWin = false;
+
     this.availableLocations = [...Array(101).keys()];
     this.availableLocations.splice(0, 1);
 
@@ -48,108 +61,55 @@ export class AppComponent {
       shipLocation?.classList.remove('bombed');
     });
 
-    const infomation = "Destroy the opposing player's fleet!";
-    const infoArray = infomation.split('');
-
-    const text = document.getElementById('messageArea') as HTMLTextAreaElement;
-    text.value = "";
-    let timeout = 0;
-    infoArray.forEach((element: string) => {
-
-      setTimeout(() => {
-        text.value += element.toString();
-      }, timeout);
-
-      timeout += 25;
-    });
-
-    this.missiles = 50;
-
-
+    this.showMessage("Destroy the enemy fleet!");
   }
 
-  fire(position: number) {
-    console.log(position);
-    const aimLocation = document.getElementById(`location-${position}`);
+  fire(location: number) {
 
+    // Get the element of the targeted location
+    const aimLocation = document.getElementById(`location-${location}`);
+
+    // If the location contains a hidden ship, mark it as hit
     if (aimLocation?.classList.contains('hidden-ship')) {
+
       aimLocation.classList.remove('hidden-ship');
       aimLocation.classList.add('sinking-ship');
 
-      let usedIndex: number = this.enemyShipLocations.indexOf(position);
+      // Remove the hit location from the enemy ship locations array
+      let usedIndex: number = this.enemyShipLocations.indexOf(location);
       if (usedIndex !== -1) {
         this.enemyShipLocations.splice(usedIndex, 1);
       }
 
-      const infomation = "It's a hit!";
-      const infoArray = infomation.split('');
-
-      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
-      text.value = "";
-      let timeout = 0;
-      infoArray.forEach((element: string) => {
-
-        setTimeout(() => {
-          text.value += element.toString();
-        }, timeout);
-
-        timeout += 50;
-      });
-
+      this.isHit = true;
       this.missiles--;
+      this.checkGameStatus();
 
+    // If the location do not contains a hidden ship, mark it as a miss
     } else if (!aimLocation?.classList.contains('sinking-ship') && !aimLocation?.classList.contains('bombed')) {
+      
       aimLocation?.classList.add('bombed');
 
-      const infomation = 'You missed.';
-      const infoArray = infomation.split('');
-
-      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
-      text.value = "";
-      let timeout = 0;
-      infoArray.forEach((element: string) => {
-
-        setTimeout(() => {
-          text.value += element.toString();
-        }, timeout);
-
-        timeout += 50;
-      });
-
+      this.isHit = false;
       this.missiles--;
-
+      this.checkGameStatus();
     }
-
-
-    this.checkGameStatus();
 
   }
 
+  // Checks the game status and displays appropriate messages
   checkGameStatus() {
 
-    if (this.enemyShipLocations.length <= 0) {
-      console.log('You Win!');
-      this.isWin = true;
+    if (this.enemyShipLocations.length > 0 && this.missiles === 0) {
       this.isGridClickable = false;
-    }
-
-    if (this.missiles === 0) {
-      const infomation = 'Run out of missiles, game over!';
-      const infoArray = infomation.split('');
-
-      const text = document.getElementById('messageArea') as HTMLTextAreaElement;
-      text.value = "";
-      let timeout = 0;
-      infoArray.forEach((element: string) => {
-
-        setTimeout(() => {
-          text.value += element.toString();
-        }, timeout);
-
-        timeout += 50;
-      });
-
-
+      this.showMessage("Run out of missiles, game over!");
+    } else if (this.enemyShipLocations.length <= 0) {
+      this.isGridClickable = false;
+      this.showMessage("All enemy ships have been sunk, you win!");
+    } else if (this.isHit) {
+      this.showMessage("It's a hit!");
+    } else if (!this.isHit) {
+      this.showMessage("You missed.");
     }
 
   }
@@ -363,6 +323,25 @@ export class AppComponent {
 
   shuffleArray(array: any) {
     array.sort(() => Math.random() - 0.5);
+  }
+
+  showMessage(message: string) {
+
+    const messageArray = message.split('');
+
+    const text = document.getElementById('messageArea') as HTMLTextAreaElement;
+    text.value = "";
+    let timeout = 0;
+    messageArray.forEach((element: string) => {
+
+      setTimeout(() => {
+        text.value += element.toString();
+      }, timeout);
+
+      timeout += 25;
+    });
+    
+    
   }
 
 }

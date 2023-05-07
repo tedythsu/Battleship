@@ -3,7 +3,7 @@
   <!-- <img src="../assets/images/c-mine.gif" alt=""> -->
 
   <div>
-    <button (click)="startGame()" class="start-button">START</button>
+    <button (click)="newGame()" class="start-button">NEW GAME</button>
   </div>
   
   <div class="grid" [ngClass]="{'grid--disabled': !isGridClickable}">
@@ -15,6 +15,6 @@
     <textarea id="messageArea">Press Start to Start game</textarea>
   </div>
   
-  <div class="missiles-info">Missile: {{missiles}} / 50</div>
+  <div class="missiles-info">Missile: {{missiles}} / 48</div>
 </div>
 
