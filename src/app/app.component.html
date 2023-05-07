@@ -1,9 +1,12 @@
 <div class="wrapper">
+
+  <!-- <img src="../assets/images/c-mine.gif" alt=""> -->
+
   <div>
     <button (click)="startGame()" class="start-button">START</button>
   </div>
   
-  <div class="grid" [ngClass]="{'grid--disabled': !gridClickable}">
+  <div class="grid" [ngClass]="{'grid--disabled': !isGridClickable}">
     <div draggable="true" class="grid__square" *ngFor="let item of [].constructor(100); let i = index"
       id="location-{{i + 1}}" (click)="fire(i + 1)"></div>
   </div>
@@ -12,6 +15,6 @@
     <textarea id="messageArea">Press Start to Start game</textarea>
   </div>
   
-  <div class="missile-info">Missile: {{missile}} / 36</div>
+  <div class="missiles-info">Missile: {{missiles}} / 50</div>
 </div>
 

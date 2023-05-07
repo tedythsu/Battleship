@@ -12,12 +12,14 @@ interface Ship {
 })
 export class AppComponent {
   title = 'battleship';
-  avaliableLocation = [...Array(101).keys()];
-  shipDirection = ['up', 'down', 'left', 'right'];
-  ifWin: boolean = false;
-  gridClickable: boolean = false;
-  enemyShipsLocation: number[] = [];
-  missile: number = 36;
+
+  // Game Settings
+  availableLocations = [...Array(101).keys()];
+  shipDirections = ['up', 'down', 'left', 'right'];
+  isWin: boolean = false;
+  isGridClickable: boolean = false;
+  enemyShipLocations: number[] = [];
+  missiles: number = 50;
 
   ships: Ship[] = [
     { "name": "carrier", "size": 5 },
@@ -33,13 +35,13 @@ export class AppComponent {
   }
 
   initialGame() {
-    this.enemyShipsLocation = [];
-    this.gridClickable = true;
-    this.ifWin = false;
-    this.avaliableLocation = [...Array(101).keys()];
-    this.avaliableLocation.splice(0, 1);
+    this.enemyShipLocations = [];
+    this.isGridClickable = true;
+    this.isWin = false;
+    this.availableLocations = [...Array(101).keys()];
+    this.availableLocations.splice(0, 1);
 
-    this.avaliableLocation.forEach(location => {
+    this.availableLocations.forEach(location => {
       const shipLocation = document.getElementById(`location-${location}`);
       shipLocation?.classList.remove('hidden-ship');
       shipLocation?.classList.remove('sinking-ship');
@@ -61,7 +63,7 @@ export class AppComponent {
       timeout += 25;
     });
 
-    this.missile = 36;
+    this.missiles = 50;
 
 
   }
@@ -74,9 +76,9 @@ export class AppComponent {
       aimLocation.classList.remove('hidden-ship');
       aimLocation.classList.add('sinking-ship');
 
-      let usedIndex: number = this.enemyShipsLocation.indexOf(position);
+      let usedIndex: number = this.enemyShipLocations.indexOf(position);
       if (usedIndex !== -1) {
-        this.enemyShipsLocation.splice(usedIndex, 1);
+        this.enemyShipLocations.splice(usedIndex, 1);
       }
 
       const infomation = "It's a hit!";
@@ -94,7 +96,7 @@ export class AppComponent {
         timeout += 50;
       });
 
-      this.missile--;
+      this.missiles--;
 
     } else if (!aimLocation?.classList.contains('sinking-ship') && !aimLocation?.classList.contains('bombed')) {
       aimLocation?.classList.add('bombed');
@@ -114,7 +116,7 @@ export class AppComponent {
         timeout += 50;
       });
 
-      this.missile--;
+      this.missiles--;
 
     }
 
@@ -125,13 +127,13 @@ export class AppComponent {
 
   checkGameStatus() {
 
-    if (this.enemyShipsLocation.length <= 0) {
+    if (this.enemyShipLocations.length <= 0) {
       console.log('You Win!');
-      this.ifWin = true;
-      this.gridClickable = false;
+      this.isWin = true;
+      this.isGridClickable = false;
     }
 
-    if (this.missile === 0) {
+    if (this.missiles === 0) {
       const infomation = 'Run out of missiles, game over!';
       const infoArray = infomation.split('');
 
@@ -172,15 +174,15 @@ export class AppComponent {
 
       while (ifNumberPass === false) {
 
-        let randomLocation = this.getRandomNum(this.avaliableLocation);
-        this.shuffleArray(this.shipDirection);
+        let randomLocation = this.getRandomNum(this.availableLocations);
+        this.shuffleArray(this.shipDirections);
 
         console.log('--------------------------------');
         console.log('船的大小為: ' + ship.size);
         console.log('隨機位置為: ' + randomLocation);
-        console.log('隨機方向為: ' + this.shipDirection)
+        console.log('隨機方向為: ' + this.shipDirections)
 
-        this.shipDirection.forEach(direction => {
+        this.shipDirections.forEach(direction => {
           if (this.checkLocation(direction, randomLocation, ship.size)) {
             this.placeShip(direction, randomLocation, ship.size);
             ifNumberPass = true;
@@ -190,7 +192,7 @@ export class AppComponent {
 
     });
 
-    console.log(this.enemyShipsLocation);
+    console.log(this.enemyShipLocations);
   }
 
   checkLocation(direction: string, location: number, shipSize: number) {
@@ -208,11 +210,11 @@ export class AppComponent {
             location++;
           }
 
-          if (ships.every(ship => this.avaliableLocation.includes(ship))) {
+          if (ships.every(ship => this.availableLocations.includes(ship))) {
             result = true;
 
             ships.forEach(ship => {
-              this.enemyShipsLocation.push(ship);
+              this.enemyShipLocations.push(ship);
             });
 
           } else {
@@ -229,11 +231,11 @@ export class AppComponent {
             location--;
           }
 
-          if (ships.every(ship => this.avaliableLocation.includes(ship))) {
+          if (ships.every(ship => this.availableLocations.includes(ship))) {
             result = true;
 
             ships.forEach(ship => {
-              this.enemyShipsLocation.push(ship);
+              this.enemyShipLocations.push(ship);
             });
 
           } else {
@@ -250,11 +252,11 @@ export class AppComponent {
             location -= 10;
           }
 
-          if (ships.every(ship => this.avaliableLocation.includes(ship))) {
+          if (ships.every(ship => this.availableLocations.includes(ship))) {
             result = true;
 
             ships.forEach(ship => {
-              this.enemyShipsLocation.push(ship);
+              this.enemyShipLocations.push(ship);
             });
 
           } else {
@@ -271,11 +273,11 @@ export class AppComponent {
             location += 10;
           }
 
-          if (ships.every(ship => this.avaliableLocation.includes(ship))) {
+          if (ships.every(ship => this.availableLocations.includes(ship))) {
             result = true;
 
             ships.forEach(ship => {
-              this.enemyShipsLocation.push(ship);
+              this.enemyShipLocations.push(ship);
             });
 
           } else {
@@ -299,9 +301,9 @@ export class AppComponent {
           const shipPosition = document.getElementById(`location-${location}`);
           shipPosition?.classList.add('hidden-ship');
 
-          let usedIndex: number = this.avaliableLocation.indexOf(location);
+          let usedIndex: number = this.availableLocations.indexOf(location);
           if (usedIndex !== -1) {
-            this.avaliableLocation.splice(usedIndex, 1);
+            this.availableLocations.splice(usedIndex, 1);
           }
           location++;
 
@@ -315,9 +317,9 @@ export class AppComponent {
           const shipPosition = document.getElementById(`location-${location}`);
           shipPosition?.classList.add('hidden-ship');
 
-          let usedIndex: number = this.avaliableLocation.indexOf(location);
+          let usedIndex: number = this.availableLocations.indexOf(location);
           if (usedIndex !== -1) {
-            this.avaliableLocation.splice(usedIndex, 1);
+            this.availableLocations.splice(usedIndex, 1);
           }
           location--;
 
@@ -331,9 +333,9 @@ export class AppComponent {
           const shipPosition = document.getElementById(`location-${location}`);
           shipPosition?.classList.add('hidden-ship');
 
-          let usedIndex: number = this.avaliableLocation.indexOf(location);
+          let usedIndex: number = this.availableLocations.indexOf(location);
           if (usedIndex !== -1) {
-            this.avaliableLocation.splice(usedIndex, 1);
+            this.availableLocations.splice(usedIndex, 1);
           }
           location -= 10;
         }
@@ -347,9 +349,9 @@ export class AppComponent {
           const shipPosition = document.getElementById(`location-${location}`);
           shipPosition?.classList.add('hidden-ship');
 
-          let usedIndex: number = this.avaliableLocation.indexOf(location);
+          let usedIndex: number = this.availableLocations.indexOf(location);
           if (usedIndex !== -1) {
-            this.avaliableLocation.splice(usedIndex, 1);
+            this.availableLocations.splice(usedIndex, 1);
           }
           location += 10;
         }
